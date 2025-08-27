@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>เกมคำนวณพลังงานมื้ออาหาร</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{
+      --bg:#f8fafc; --card:#ffffff; --border:#e2e8f0; --text:#0f172a;
+      --muted:#475569; --primary:#0f172a; --good:#16a34a; --warn:#d97706; --bad:#dc2626;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(#fff,var(--bg));color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px 16px}
+    h1{margin:0 0 6px;font-size:clamp(20px,3vw,36px)} .lead{margin:0 0 20px;color:var(--muted);font-size:clamp(14px,2vw,18px)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:0 2px 8px rgba(15,23,42,.04)}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .badge{font-size:12px;padding:4px 8px;border-radius:999px;background:#f1f5f9;border:1px solid var(--border);color:#334155}
+    .name{margin:10px 0 6px;font-weight:700}
+    .btns{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px}
+    button.qty{border:1px solid #334155;background:#fff;padding:10px 8px;border-radius:10px;cursor:pointer;transition:transform .05s,background .1s,color .1s;font-weight:600}
+    button.qty.selected{background:var(--primary);color:#fff} button.qty:active{transform:scale(.98)}
+    .stats{display:flex;align-items:center;justify-content:space-between;color:#334155;font-size:14px}
+    .panel{margin-top:18px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(15,23,42,.04)}
+    .total{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .total h3{margin:0;font-size:clamp(18px,2.4vw,22px)} .kcal{font-size:clamp(28px,4vw,44px);font-weight:900}
+    .bar{margin-top:12px;height:12px;background:#e2e8f0;border-radius:999px;overflow:hidden}
+    .fill{height:100%;width:0%;background:#0f172a;transition:width .2s linear}
+    .scale{display:flex;justify-content:space-between;font-size:12px;color:#64748b;margin-top:4px}
+    .advice{margin-top:12px;padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:#f1f5f9;color:#0f172a;font-weight:600}
+    .advice.good{background:#ecfdf5;border-color:#bbf7d0;color:#166534}
+    .advice.warn{background:#fff7ed;border-color:#fed7aa;color:#b45309}
+    .advice.bad{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+    .actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:#fff;cursor:pointer;transition:transform .05s,opacity .1s;font-weight:600}
+    .btn:active{transform:scale(.98)} .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)} .btn[disabled]{opacity:.5;cursor:not-allowed}
+    footer{margin-top:18px;text-align:center;color:#64748b;font-size:12px}
+    .emoji{font-size:24px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🎮 เกมคำนวณพลังงานมื้ออาหาร</h1>
+    <p class="lead">เลือกปริมาณ <b>1–4 หน่วย</b> สำหรับแต่ละเมนู แล้วดูพลังงานรวมเทียบกับเป้าหมาย <b id="targetLabel">550</b> kcal</p>
+
+    <div id="cards" class="grid" aria-live="polite"></div>
+
+    <div class="panel" aria-live="polite">
+      <div class="total">
+        <div>
+          <h3>พลังงานรวมทั้งมื้อ</h3>
+          <p style="margin:.25rem 0 0; color:#64748b">เป้าหมาย: <b id="targetText">550</b> kcal</p>
+        </div>
+        <div class="kcal"><span id="totalKcal">0</span> <span style="font-size:.6em;font-weight:700">kcal</span></div>
+      </div>
+
+      <div class="bar" aria-hidden="true">
+        <div id="progressFill" class="fill"></div>
+      </div>
+      <div class="scale"><span>0</span><span id="scaleMid">550</span><span>1200 kcal</span></div>
+
+      <div id="adviceBox" class="advice">กรุณาเลือกปริมาณอาหารให้ครบทุกเมนู</div>
+
+      <div class="actions">
+        <button id="resetBtn" class="btn">ล้างค่าเริ่มต้น</button>
+        <button id="confirmBtn" class="btn primary" disabled>ยืนยันผลลัพธ์</button>
+      </div>
+    </div>
+
+    <footer>ค่าพลังงานต่อหน่วย: ข้าว 80 • ต้มจืด 50 • ผัดผัก 80 • น้ำพริก 60 • ปลาทอด 120 • ยำรวมมิตร 90 (kcal)</footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
